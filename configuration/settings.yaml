@@ -1,0 +1,8 @@
+
+kinesis:
+  defaults:
+    region: 'eu-west-1'
+
+  producer:
+    mocks:
+      path: resources/mocks/
