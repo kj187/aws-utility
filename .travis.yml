@@ -1,0 +1,24 @@
+sudo: false
+language: php
+php:
+  - '5.5'
+  - '5.6'
+  - '7.0'
+before_script:
+  #- curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+  - composer install --no-progress --no-interaction
+script:
+  # Code Style
+  #- php phpcs.phar --standard=./phpcs.xml --encoding=utf-8 --report-width=180 ./src
+  - phpunit --debug --coverage-clover build/logs/clover.xml --log-junit build/logs/junit.xml
+after_script:
+  - vendor/bin/test-reporter
+notifications:
+  email:
+    recipients: [ travisci@kj187.de ]
+    on_success: always
+    on_failure: always
+addons:
+  code_climate:
+    repo_token:
+      secure: "Tm/OsimD51lok+x99bs4f2vGouKjkf9FbUT3Y5i+TE5gSqtVKO1CTnCqu/q0yrjSwqCo8LpLzWIG9hP+C3ook4HqYLL2kxQ1NEM6YRXMlITkw6aNP+Z8ZNVKYSzhyCS2hQxCRB1xRlf4G1A9fnN7qn7EVxC22Gr9ElNfpb8QagE3q9UeK27Hajm1c+yoaCWa1NON/2MMjGnLkn/Mzy73KAnHrUgpZnL9yXRk/2FM/26lJ7gKfMEHmoKVJ9cqgql0x+3aQFC9bWml29HGiwnOFeORIe7vrZAlM4IPVeHQSmzx7nhVZdku5hrFIoYKtrsS2vYvtCC9GYhXDv2TgTDNanxXKd7hfWNKX2bQFtVMICRawJjgtnbTyn4btP5/HRBMrJeMM21DxsrH1WOxPxC2abcHqylRizP4kPO2JGI3R3WY1VhOOEeIU3NVQga8cAfPr1Den2W7ZVJMvAZLC+tk63UtalR0dXU+zESv4Zw8PUn4pgEijtHR0u+DgXC6hFBZryHXIVFL1ZYJZSwdh9/S5QIFYJ2e/LtwWbFdvqisas+X1+Z5dtq/aI1S3aJz5kqGoRJ2I3AfUwYD0vj6ayS2eDu+VoFsn4Epo1n21LX34wQk+SYIGaFANhy2OYT9wnObf9VOwt1I9RsifW2sSODzRY5Ekk48+EbGOuwUFjFCUCc="
