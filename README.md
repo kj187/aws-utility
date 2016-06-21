@@ -1,6 +1,8 @@
 
 # AWS Utility
 
+[![Code Climate](https://codeclimate.com/github/kj187/aws-utility/badges/gpa.svg)](https://codeclimate.com/github/kj187/aws-utility)
+
 **Lightweight AWS Utility**
 
 Author: 
