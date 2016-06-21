@@ -1,7 +1,9 @@
 
 # AWS Utility
 
+[![Build Status](https://travis-ci.org/kj187/aws-utility.svg?branch=master)](https://travis-ci.org/kj187/aws-utility)
 [![Code Climate](https://codeclimate.com/github/kj187/aws-utility/badges/gpa.svg)](https://codeclimate.com/github/kj187/aws-utility)
+[![Test Coverage](https://codeclimate.com/github/kj187/aws-utility/badges/coverage.svg)](https://codeclimate.com/github/kj187/aws-utility/coverage)
 
 **Lightweight AWS Utility**
 
