@@ -55,13 +55,8 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
                 'resourcePathPart',
                 InputArgument::REQUIRED,
                 'The last path segment for this resource.'
-            )
-            ->addOption(
-                'region',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Region to which the client is configured to send requests'
             );
+            parent::configure();
     }
     
     /**
@@ -219,7 +214,13 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
     {
         if ($this->client === null) {
             $sdk = new \Aws\Sdk();
-            $this->client = $sdk->createApiGateway(['region' => $this->getRegion(), 'version' => $this->getSettings()['api_gateway']['version']]);
+            $this->client = $sdk->createApiGateway(
+                [
+                    'region' => $this->getRegion(), 
+                    'version' => $this->getSettings()['api_gateway']['version'],
+                    'credentials' => $this->getCredentials()
+                ]
+            );
         }
 
         return $this->client;

@@ -32,13 +32,8 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
                 'streamName',
                 InputArgument::REQUIRED,
                 'Stream Name'
-            )
-            ->addOption(
-                'region',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Region to which the client is configured to send requests'
             );
+            parent::configure();
     }
     
     /**
@@ -83,7 +78,13 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
     {
         if ($this->client === null) {
             $sdk = new \Aws\Sdk();
-            $this->client = $sdk->createKinesis(['region' => $this->getRegion(), 'version' => $this->getSettings()['kinesis']['version']]);
+            $this->client = $sdk->createKinesis(
+                [
+                    'region' => $this->getRegion(), 
+                    'version' => $this->getSettings()['kinesis']['version'],
+                    'credentials' => $this->getCredentials()
+                ]
+            );
         }
 
         return $this->client;

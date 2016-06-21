@@ -4,6 +4,7 @@ namespace Kj187\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -18,6 +19,11 @@ class AbstractCommand extends Command
      * @var array
      */
     protected $settings = [];
+    
+    /**
+     * @var \Aws\Credentials\CredentialsInterface
+     */
+    protected $credentials = null;
 
     /**
      * @param InputInterface $input
@@ -33,7 +39,40 @@ class AbstractCommand extends Command
         if ($region = $input->getOption('region')) {
             $this->region = $region;
         }
-    }    
+        
+        $this->credentials = new \Kj187\Credentials($input->getOption('awsAccessKeyId'), $input->getOption('awsSecretAccessKey'));
+    }
+
+    /**
+     * @return \Aws\Credentials\CredentialsInterface
+     */
+    protected function getCredentials()
+    {
+        return $this->credentials;
+    }
+
+    protected function configure()
+    {
+        $this
+            ->addOption(
+                'region',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Region to which the client is configured to send requests'
+            )
+            ->addOption(
+                'awsAccessKeyId',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'AWS access key'
+            )
+            ->addOption(
+                'awsSecretAccessKey',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'AWS secret key'
+            );                        
+    }
 
     /**
      * @return array
