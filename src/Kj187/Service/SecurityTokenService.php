@@ -18,19 +18,21 @@ class SecurityTokenService {
      *
      * http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sts-2011-06-15.html#assumerole
      *
+     * @param \Aws\Credentials\CredentialsInterface $credentials
      * @param string $region
      * @param string $roleArn The Amazon Resource Name (ARN) of the role to assume.
      * @param string $roleSessionName An identifier for the assumed role session.
      * @param string $externalId A unique identifier that is used by third parties when assuming roles in their customers' accounts.
      * @return \Aws\Result
      */
-    public function __construct($region, $roleArn, $roleSessionName, $externalId = '')
+    public function __construct(\Aws\Credentials\CredentialsInterface $credentials, $region, $roleArn, $roleSessionName, $externalId = '')
     {        
         $stsClient = new \Aws\Sts\StsClient(
             [
                 'endpoint' => Settings::get('services.sts.endpoint'),
                 'version' => Settings::get('services.sts.version'),
-                'region' => $region
+                'region' => $region,
+                'credentials' => $credentials
             ]
         );
         

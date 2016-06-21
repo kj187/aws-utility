@@ -47,7 +47,7 @@ class AbstractCommand extends Command
         $awsAccessKeyId = $input->getOption('awsAccessKeyId');
         $awsSecretAccessKey = $input->getOption('awsSecretAccessKey');
         $this->credentials = new \Kj187\Credentials($awsAccessKeyId, $awsSecretAccessKey);
-        
+
         if ($input->hasParameterOption('--assumeRole')) {
             $assumedRoleArn = $input->getOption('assumedRoleArn');
             if (!$assumedRoleArn) {
@@ -55,7 +55,7 @@ class AbstractCommand extends Command
                 throw new \Exception('Option --assumedRoleArn empty');
             }
             $assumedRoleExternalId = $input->getOption('assumedRoleExternalId');
-            $securityTokenService = new \Kj187\Service\SecurityTokenService($this->region, $assumedRoleArn, $this->assumedRoleSessionName, $assumedRoleExternalId);
+            $securityTokenService = new \Kj187\Service\SecurityTokenService($this->credentials, $this->region, $assumedRoleArn, $this->assumedRoleSessionName, $assumedRoleExternalId);
             $awsAccessKeyId = $securityTokenService->getAwsAccessKeyId();
             $awsSecretAccessKey = $securityTokenService->getAwsSecretAccessKey();
             $token = $securityTokenService->getToken();
