@@ -1,0 +1,25 @@
+<phpunit bootstrap="tests/phpunit.bootstrap.php"
+         colors="true"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         syntaxCheck="false"
+         stopOnFailure="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true">
+    <testsuite name="Tests">
+        <directory suffix="Test.php">./tests</directory>
+    </testsuite>
+    <php>
+    </php>
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+            <exclude>
+                <file>src/Kj187/CommandRegistry.php</file>
+                <directory>src/Kj187/Command</directory>
+                <directory>src/Kj187/Command</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
