@@ -15,13 +15,13 @@ class Credentials extends \Aws\Credentials\Credentials {
      */
     public function __construct($key, $secret, $token = null, $expires = null)
     {
-        parent::__construct($this->_getAwsAccessKeyId($key), $this->_getAwsSecretAccessKey($secret), $token, $expires);
+        parent::__construct($this->getAwsAccessKeyId($key), $this->getAwsSecretAccessKey($secret), $token, $expires);
     }
     
     /**
      * @param string $awsAccessKeyId
      */
-    private function _getAwsAccessKeyId($awsAccessKeyId)
+    private function getAwsAccessKeyId($awsAccessKeyId)
     {
         if (!$awsAccessKeyId && !empty(getenv('AWS_ACCESS_KEY_ID'))) {
             $awsAccessKeyId = getenv('AWS_ACCESS_KEY_ID');
@@ -37,7 +37,7 @@ class Credentials extends \Aws\Credentials\Credentials {
     /**
      * @param string $awsSecretAccessKey
      */
-    private function _getAwsSecretAccessKey($awsSecretAccessKey)
+    private function getAwsSecretAccessKey($awsSecretAccessKey)
     {
         if (!$awsSecretAccessKey && !empty(getenv('AWS_SECRET_ACCESS_KEY'))) {
             $awsSecretAccessKey = getenv('AWS_SECRET_ACCESS_KEY');

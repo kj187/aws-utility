@@ -73,7 +73,7 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
         $this->interactAskForResource($input, $output, $restApiId);
         $resourcePathPart = $input->getArgument('resourcePathPart');
         
-        $this->buildEndpoint($restApiId, $restApiName, $stageName, $resourcePathPart);
+        $this->buildEndpoint($restApiId, $stageName, $resourcePathPart);
         
         $output->writeln('');
         $output->writeln('Selected rest api: ' . $stageName . ' (' . $restApiName . ')');
@@ -150,7 +150,6 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
             throw new \Exception('No API Gateway Rest APIs available');
         }
         
-        $data = [];
         foreach ($restApis['items'] as $api) {
             $this->restApis[$api['name']] = $api;
         }
@@ -191,12 +190,13 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
     /**
      * @param string $restApiId
      * @param string $restApiName
+     * @param string $resourcePathPart
      */
-    protected function buildEndpoint($restApiId, $restApiName, $stageName, $resource)
+    protected function buildEndpoint($restApiId, $stageName, $resourcePathPart)
     {
         $service = self::SERVICE_NAME;
         $region = $this->getRegion();
-        $this->endpoint = "https://{$restApiId}.{$service}.{$region}.amazonaws.com/{$stageName}/{$resource}";
+        $this->endpoint = "https://{$restApiId}.{$service}.{$region}.amazonaws.com/{$stageName}/{$resourcePathPart}";
     }
     
     /**

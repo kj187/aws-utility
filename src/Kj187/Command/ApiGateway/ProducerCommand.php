@@ -31,10 +31,9 @@ class ProducerCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $credentials = $this->getCredentials();
         if ($input->hasParameterOption('--assumeRole')) {
             $credentials = $this->getAssumedRoleCredentials();
-        } else {
-            $credentials = $this->getCredentials();
         }
 
         $signature = new \Aws\Signature\SignatureV4('execute-api', $this->getRegion());
