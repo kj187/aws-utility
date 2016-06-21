@@ -51,12 +51,13 @@ class ProducerCommand extends AbstractCommand
             $body = file_get_contents($fileInfo->getPathName());
             $output->writeln('Send mock: ' . $fileInfo->getPathName());
             
-            $request = new \GuzzleHttp\Psr7\Request('POST', $this->getEndpoint(), [], $body);
+            $request = new \GuzzleHttp\Psr7\Request('POST', $this->getEndpoint(), ['X-Source' => 'aws-utility'], $body);
             $request = $signature->signRequest($request, $credentials);
             $response = $client->send($request, []);
         
             $output->writeln('Status Code: ' . $response->getStatusCode());
             $output->writeln('Response body: ' . $response->getBody());
+            $output->writeln('---------------------------------------------------------------------------------');
             $output->writeln('');
         }
     }
