@@ -4,38 +4,47 @@ namespace Kj187;
 
 class Buffer {
 
-    protected $_callback;
+    /**
+     * @var callable
+     */
+    protected $callback;
 
-    protected $_size;
+    /**
+     * @var int
+     */
+    protected $size;
 
-    protected $_data = [];
+    /**
+     * @var array
+     */
+    protected $data = [];
 
     /**
      * @param callable $callback
      * @param int $size
      */
     public function __construct(callable $callback, $size = 500) {
-        $this->_callback = $callback;
-        $this->_size = $size;
+        $this->callback = $callback;
+        $this->size = $size;
     }
 
     /**
      * @param string $item
      */
     public function add($item) {
-        $this->_data[] = $item;
-        if (count($this->_data) >= $this->_size) {
+        $this->data[] = $item;
+        if (count($this->data) >= $this->size) {
             $this->flush();
         }
     }
 
     public function reset() {
-        $this->_data = [];
+        $this->data = [];
     }
 
     public function flush() {
-        if (count($this->_data) > 0) {
-            call_user_func($this->_callback, $this->_data);
+        if (count($this->data) > 0) {
+            call_user_func($this->callback, $this->data);
             $this->reset();
         }
     }

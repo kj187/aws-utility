@@ -8,7 +8,8 @@ class CommandRegistry
     {
         return [
             new \Kj187\Command\Kinesis\ConsumerCommand(),
-            new \Kj187\Command\Kinesis\ProducerCommand()
+            new \Kj187\Command\Kinesis\ProducerCommand(),
+            new \Kj187\Command\ApiGateway\ProducerCommand()
         ];
     }
 }

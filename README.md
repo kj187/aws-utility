@@ -6,6 +6,10 @@
 Author: 
  - [Julian Kleinhans](https://github.com/kj187)
 
+## Description
+A lightweight AWS utility that allows you to easily access the Amazon Web Services APIs.
+At least the ones that are important to me, so not all methods for the APIs are supported yet.
+
 ## Requirements
 
 ### Composer 

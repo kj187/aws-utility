@@ -13,19 +13,8 @@ class ConsumerCommand extends AbstractCommand
     {
         $this
             ->setName('kinesis:consumer')
-            ->setDescription('Consume records of a Kinesis stream and show the amount of each shard')
-            ->addArgument(
-                'streamName',
-                InputArgument::REQUIRED,
-                'Stream Name'
-            )
-            ->addOption(
-                'region',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Region to which the client is configured to send requests'
-            )
-        ;
+            ->setDescription('Consume records of a Kinesis stream and show the amount of each shard');
+        parent::configure();
     }
 
     /**
@@ -35,13 +24,9 @@ class ConsumerCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($region = $input->getOption('region')) {
-            $this->_region = $region;
-        }
-
         $streamName = $input->getArgument('streamName');
 
-        $client = $this->_getKinesisClient();
+        $client = $this->getClient();
         $res = $client->describeStream([ 'StreamName' => $streamName ]);
 
         $shardIds = $res->search('StreamDescription.Shards[].ShardId');

@@ -2,7 +2,6 @@
 
 namespace Kj187\Command\Kinesis;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -10,48 +9,38 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Yaml\Parser;
 
-class AbstractCommand extends Command
+class AbstractCommand extends \Kj187\Command\AbstractCommand
 {
     /**
      * @var \Aws\Kinesis\KinesisClient
      */
-    protected $_kinesisClient = null;
-
+    protected $client = null;
+    
     /**
-     * @var string
-     */
-    protected $_region = '';
-
-    /**
-     * @var array
-     */
-    protected $_settings = [];
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name = null)
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */    
+    protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $settings = $this->_getSettings();
-        $this->_region = $settings['kinesis']['defaults']['region'];
-        
-        parent::__construct($name);
+        parent::initialize($input, $output);
     }
-
-    /**
-     * @return array
-     */
-    protected function _getSettings()
+    
+    protected function configure()
     {
-        if (empty($this->_settings)) {
-            $file = __DIR__ . '/../../../../configuration/settings.yaml';
-            $yamlParser = new Parser();
-            $this->_settings = $yamlParser->parse(file_get_contents($file));
-        }
-
-        return $this->_settings;
+        $this
+            ->addArgument(
+                'streamName',
+                InputArgument::REQUIRED,
+                'Stream Name'
+            )
+            ->addOption(
+                'region',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Region to which the client is configured to send requests'
+            );
     }
-
+    
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -59,11 +48,7 @@ class AbstractCommand extends Command
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        if ($region = $input->getOption('region')) {
-            $this->_region = $region;
-        }
-
-        $streams = $this->_findAllStreamNames();
+        $streams = $this->findAllStreamNames();
 
         $helper = $this->getHelper('question');
         $question = new ChoiceQuestion('Please select a stream', $streams);
@@ -79,9 +64,9 @@ class AbstractCommand extends Command
      * @return array
      * @throws \Exception
      */
-    protected function _findAllStreamNames()
+    protected function findAllStreamNames()
     {
-        $client = $this->_getKinesisClient();
+        $client = $this->getClient();
         $streams = $client->listStreams();
 
         if (!isset($streams['StreamNames'])) {
@@ -94,13 +79,13 @@ class AbstractCommand extends Command
     /**
      * @return \Aws\Kinesis\KinesisClient
      */
-    protected function _getKinesisClient()
+    protected function getClient()
     {
-        if ($this->_kinesisClient === null) {
+        if ($this->client === null) {
             $sdk = new \Aws\Sdk();
-            $this->_kinesisClient = $sdk->createKinesis(['region' => $this->_region, 'version' => '2013-12-02']);
+            $this->client = $sdk->createKinesis(['region' => $this->getRegion(), 'version' => $this->getSettings()['kinesis']['version']]);
         }
 
-        return $this->_kinesisClient;
+        return $this->client;
     }
 }

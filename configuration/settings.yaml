@@ -1,8 +1,12 @@
-
-kinesis:
-  defaults:
+defaults:
     region: 'eu-west-1'
 
-  producer:
-    mocks:
-      path: resources/mocks/
+kinesis:
+    version: '2013-12-02'
+
+    producer:
+        mocks:
+            path: resources/mocks/
+      
+api_gateway:
+    version: '2015-07-09'
