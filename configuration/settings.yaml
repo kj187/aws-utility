@@ -1,12 +1,21 @@
 defaults:
     region: 'eu-west-1'
 
-kinesis:
-    version: '2013-12-02'
+services:
+    kinesis:
+        version: '2013-12-02'
 
-    producer:
-        mocks:
-            path: resources/mocks/
+        producer:
+            mocks:
+                path: resources/mocks/kinesis/
       
-api_gateway:
-    version: '2015-07-09'
+    api_gateway:
+        version: '2015-07-09'
+    
+        producer:
+            mocks:
+                path: resources/mocks/api-gateway/
+            
+    sts:
+        version: '2011-06-15'
+        endpoint: 'https://sts.eu-west-1.amazonaws.com'

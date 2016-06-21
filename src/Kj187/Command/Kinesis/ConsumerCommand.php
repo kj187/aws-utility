@@ -9,6 +9,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsumerCommand extends AbstractCommand
 {
+    /**
+     * @var string
+     */
+    protected $assumedRoleSessionName = 'aws-utility-kinesis-consumer';
+    
     protected function configure()
     {
         $this

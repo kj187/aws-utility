@@ -3,10 +3,10 @@
 namespace Kj187\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Kj187\Settings;
 
 class AbstractCommand extends Command
 {
@@ -16,14 +16,19 @@ class AbstractCommand extends Command
     protected $region = '';
 
     /**
-     * @var array
+     * @var \Aws\Credentials\CredentialsInterface
      */
-    protected $settings = [];
+    protected $credentials = null;
     
     /**
      * @var \Aws\Credentials\CredentialsInterface
      */
-    protected $credentials = null;
+    protected $assumedRoleCredentials = null;
+    
+    /**
+     * @var string
+     */
+    protected $assumedRoleSessionName = 'aws-utility';
 
     /**
      * @param InputInterface $input
@@ -33,24 +38,32 @@ class AbstractCommand extends Command
     {
         parent::initialize($input, $output);
         
-        $this->settings = $this->getSettings();
-        $this->region = $this->settings['defaults']['region'];
+        $this->region = Settings::get('defaults.region');
 
         if ($region = $input->getOption('region')) {
             $this->region = $region;
         }
         
-        $this->credentials = new \Kj187\Credentials($input->getOption('awsAccessKeyId'), $input->getOption('awsSecretAccessKey'));
+        $awsAccessKeyId = $input->getOption('awsAccessKeyId');
+        $awsSecretAccessKey = $input->getOption('awsSecretAccessKey');
+        $this->credentials = new \Kj187\Credentials($awsAccessKeyId, $awsSecretAccessKey);
+        
+        if ($input->hasParameterOption('--assumeRole')) {
+            $assumedRoleArn = $input->getOption('assumedRoleArn');
+            if (!$assumedRoleArn) {
+                // TODO ask for roles with filter http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-iam-2010-05-08.html#listroles
+                throw new \Exception('Option --assumedRoleArn empty');
+            }
+            $assumedRoleExternalId = $input->getOption('assumedRoleExternalId');
+            $securityTokenService = new \Kj187\Service\SecurityTokenService($this->region, $assumedRoleArn, $this->assumedRoleSessionName, $assumedRoleExternalId);
+            $awsAccessKeyId = $securityTokenService->getAwsAccessKeyId();
+            $awsSecretAccessKey = $securityTokenService->getAwsSecretAccessKey();
+            $token = $securityTokenService->getToken();
+            
+            $this->assumedRoleCredentials = new \Kj187\Credentials($awsAccessKeyId, $awsSecretAccessKey, $token);
+        }
     }
-
-    /**
-     * @return \Aws\Credentials\CredentialsInterface
-     */
-    protected function getCredentials()
-    {
-        return $this->credentials;
-    }
-
+    
     protected function configure()
     {
         $this
@@ -71,23 +84,43 @@ class AbstractCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'AWS secret key'
-            );                        
-    }
-
+            )
+            ->addOption(
+                'assumeRole',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Enable assume role'
+            )
+            ->addOption(
+                'assumedRoleArn',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The Amazon Resource Name (ARN) of the role to assume.'
+            )
+            ->addOption(
+                'assumedRoleExternalId',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'A unique identifier that is used by third parties when assuming roles in their customers accounts.'
+            );
+    }    
+    
     /**
-     * @return array
+     * @return \Aws\Credentials\CredentialsInterface
      */
-    protected function getSettings()
+    protected function getCredentials()
     {
-        if (empty($this->settings)) {
-            $file = __DIR__ . '/../../../configuration/settings.yaml';
-            $yamlParser = new Parser();
-            $this->settings = $yamlParser->parse(file_get_contents($file));
-        }
-
-        return $this->settings;
+        return $this->credentials;
     }
     
+    /**
+     * @return \Aws\Credentials\CredentialsInterface
+     */
+    protected function getAssumedRoleCredentials()
+    {
+        return $this->assumedRoleCredentials;
+    }
+
     /**
      * @return string
      */

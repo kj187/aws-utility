@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Yaml\Parser;
+use Kj187\Settings;
 
 class AbstractCommand extends \Kj187\Command\AbstractCommand
 {
@@ -81,7 +82,7 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
             $this->client = $sdk->createKinesis(
                 [
                     'region' => $this->getRegion(), 
-                    'version' => $this->getSettings()['kinesis']['version'],
+                    'version' => Settings::get('services.kinesis.version'),
                     'credentials' => $this->getCredentials()
                 ]
             );

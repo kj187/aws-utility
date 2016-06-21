@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Yaml\Parser;
+use Kj187\Settings;
 
 class AbstractCommand extends \Kj187\Command\AbstractCommand
 {
@@ -217,7 +217,7 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
             $this->client = $sdk->createApiGateway(
                 [
                     'region' => $this->getRegion(), 
-                    'version' => $this->getSettings()['api_gateway']['version'],
+                    'version' => Settings::get('services.api_gateway.version'),
                     'credentials' => $this->getCredentials()
                 ]
             );

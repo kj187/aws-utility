@@ -28,7 +28,7 @@ $ export AWS_SECRET_ACCESS_KEY=YOURSECRETACCESSKEY
 
 And make sure this user is allowed to use at least the following actions:
 
-For Kinesis:
+#### Kinesis
 
 - DescribeStream
 - GetRecords
@@ -36,6 +36,10 @@ For Kinesis:
 - ListStreams
 - PutRecord
 - PutRecords 
+
+#### API Gateway
+
+- apigateway:GET
 
 ## Usage
 
@@ -57,10 +61,24 @@ $ php bin/application.php kinesis:producer
 But first, create a new directory "mocks" below "resources" and move your data inside. One file equals one record.
 
 
-#### Example
-
-![Example](http://res.cloudinary.com/kj187/image/upload/v1466067037/KinesisUtilityExample_pluraf.png)
-
 ### API Gateway
 
-TODO
+```
+$ php bin/application.php api-gateway:producer
+```
+
+```
+$ php bin/application.php api-gateway:producer --region=eu-west-2
+```
+
+```
+$ php bin/application.php api-gateway:producer --awsAccessKeyId=AKIQIGRDAXXXX56SEGNA --awsSecretAccessKey=nHCNP8PJyNOiLAF86O1tTrNCC/bT0boBQ+Lm15F
+```
+
+```
+$ php bin/application.php api-gateway:producer --assumeRole --assumedRoleArn='arn:aws:iam::1234567898765:role/MyRoleName-1D1A0IQS32268' --assumedRoleExternalId='123abc456def789'
+```
+
+## Example
+
+![Example](http://res.cloudinary.com/kj187/image/upload/v1466067037/KinesisUtilityExample_pluraf.png)
