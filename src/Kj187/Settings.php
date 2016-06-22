@@ -21,7 +21,7 @@ class Settings {
             $file = ROOT_DIR . 'configuration/settings.yaml';
 
             if (!is_file($file)) {
-                throw new \Exception('Configuration file not available. Expected file is ' . $file);
+                throw new \Exception('Configuration file not available. Expected file is configuration/settings.yaml');
             }
 
             $yamlParser = new Parser();
