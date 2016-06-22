@@ -38,7 +38,7 @@ class ProducerCommand extends AbstractCommand
         $signature = new \Aws\Signature\SignatureV4('execute-api', $this->getRegion());
         $client = new \GuzzleHttp\Client();
 
-        $directoryPath = ROOT_DIR . $this->_settings->get('services.api_gateway.producer.mocks.path') . $input->getArgument('restApiName'). '/' . $input->getArgument('resourcePathPart') . '/';
+        $directoryPath = ROOT_DIR . $this->settings->get('services.api_gateway.producer.mocks.path') . $input->getArgument('restApiName'). '/' . $input->getArgument('resourcePathPart') . '/';
         if (!is_dir($directoryPath)) {
             throw new \Exception('Directory with mocks are not available "' . $directoryPath . '". We expect a subdirectory with the API name and a second subdirectory with the resource name.');
         }

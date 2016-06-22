@@ -216,7 +216,7 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
             $this->client = $sdk->createApiGateway(
                 [
                     'region' => $this->getRegion(), 
-                    'version' => $this->_settings->get('services.api_gateway.version'),
+                    'version' => $this->settings->get('services.api_gateway.version'),
                     'credentials' => $this->getCredentials()
                 ]
             );

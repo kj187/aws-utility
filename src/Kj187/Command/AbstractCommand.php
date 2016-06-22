@@ -33,24 +33,25 @@ class AbstractCommand extends Command
     /**
      * @var \Kj187\Settings
      */
-    protected $_settings = [];
+    protected $settings = [];
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     */    
+     * @throws \Exception
+     */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
         
-        $this->_settings = new \Kj187\Settings();
+        $this->settings = new \Kj187\Settings();
         
-        $this->region = $this->_settings->get('defaults.region');
+        $this->region = $this->settings->get('defaults.region');
 
         if ($region = $input->getOption('region')) {
             $this->region = $region;
         }
-        
+
         $awsAccessKeyId = $input->getOption('awsAccessKeyId');
         $awsSecretAccessKey = $input->getOption('awsSecretAccessKey');
         $this->credentials = new \Kj187\Credentials($awsAccessKeyId, $awsSecretAccessKey);

@@ -81,7 +81,7 @@ class AbstractCommand extends \Kj187\Command\AbstractCommand
             $this->client = $sdk->createKinesis(
                 [
                     'region' => $this->getRegion(), 
-                    'version' => $this->_settings->get('services.kinesis.version'),
+                    'version' => $this->settings->get('services.kinesis.version'),
                     'credentials' => $this->getCredentials()
                 ]
             );

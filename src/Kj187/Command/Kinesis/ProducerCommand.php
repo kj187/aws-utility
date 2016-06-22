@@ -44,7 +44,7 @@ class ProducerCommand extends AbstractCommand
             $output->writeln('Failed records: ' . $res->get('FailedRecordCount'));
         });
 
-        foreach (new \DirectoryIterator($this->_settings->get('services.kinesis.producer.mocks.path')) as $fileInfo) {
+        foreach (new \DirectoryIterator($this->settings->get('services.kinesis.producer.mocks.path')) as $fileInfo) {
             if($fileInfo->isDot()) continue;
             $fileContent = file_get_contents($fileInfo->getPathName());
             $buffer->add($fileContent);
