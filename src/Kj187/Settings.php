@@ -17,7 +17,7 @@ class Settings {
     public static function getSettings()
     {
         if (empty(self::$settings)) {
-            $file = __DIR__ . '/../../configuration/settings.yaml';
+            $file = ROOT_DIR . 'configuration/settings.yaml';
             $yamlParser = new Parser();
             self::$settings = $yamlParser->parse(file_get_contents($file));
         }
