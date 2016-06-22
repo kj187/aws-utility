@@ -16,7 +16,7 @@
         <whitelist>
             <directory>src</directory>
             <exclude>
-                <file>src/Kj187/CommandRegistry.php</file>
+                <file>src/Kj187/Command/CommandRegistry.php</file>
                 <directory>src/Kj187/Command</directory>
                 <directory>src/Kj187/Command</directory>
             </exclude>

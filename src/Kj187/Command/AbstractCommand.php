@@ -31,6 +31,11 @@ class AbstractCommand extends Command
     protected $assumedRoleSessionName = 'aws-utility';
 
     /**
+     * @var \Kj187\Settings
+     */
+    protected $_settings = [];
+
+    /**
      * @param InputInterface $input
      * @param OutputInterface $output
      */    
@@ -38,7 +43,9 @@ class AbstractCommand extends Command
     {
         parent::initialize($input, $output);
         
-        $this->region = Settings::get('defaults.region');
+        $this->_settings = new \Kj187\Settings();
+        
+        $this->region = $this->_settings->get('defaults.region');
 
         if ($region = $input->getOption('region')) {
             $this->region = $region;

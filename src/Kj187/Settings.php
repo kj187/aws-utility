@@ -9,30 +9,37 @@ class Settings {
     /**
      * @var array
      */
-    protected static $settings = [];
-    
+    protected $settings = [];
+
     /**
      * @return array
+     * @throws \Exception
      */
-    public static function getSettings()
+    public function getSettings()
     {
-        if (empty(self::$settings)) {
+        if (empty($this->settings)) {
             $file = ROOT_DIR . 'configuration/settings.yaml';
+
+            if (!is_file($file)) {
+                throw new \Exception('Configuration file not available. Expected file is ' . $file);
+            }
+
             $yamlParser = new Parser();
-            self::$settings = $yamlParser->parse(file_get_contents($file));
+            $this->settings = $yamlParser->parse(file_get_contents($file));
         }
         
-        return self::$settings;
+        return $this->settings;
     }
-    
+
     /**
-     * @param string
+     * @param string $settingKey
      * @return string
-     */    
-    public static function get($settingKey)
+     * @throws \Exception
+     */
+    public function get($settingKey)
     {
         $keys = explode('.', trim($settingKey));
-        $settings = self::getSettings();
+        $settings = $this->getSettings();
         
         foreach ($keys as $key) {
             if (!isset($settings[$key])) {

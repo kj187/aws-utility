@@ -1,6 +1,6 @@
 <?php
 
-namespace Kj187;
+namespace Kj187\Command;
 
 class CommandRegistry
 {

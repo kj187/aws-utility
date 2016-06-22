@@ -6,7 +6,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Kj187\Settings;
 
 class ProducerCommand extends AbstractCommand
 {
@@ -45,7 +44,7 @@ class ProducerCommand extends AbstractCommand
             $output->writeln('Failed records: ' . $res->get('FailedRecordCount'));
         });
 
-        foreach (new \DirectoryIterator(Settings::get('services.kinesis.producer.mocks.path')) as $fileInfo) {
+        foreach (new \DirectoryIterator($this->_settings->get('services.kinesis.producer.mocks.path')) as $fileInfo) {
             if($fileInfo->isDot()) continue;
             $fileContent = file_get_contents($fileInfo->getPathName());
             $buffer->add($fileContent);
