@@ -12,23 +12,16 @@ class Settings {
     protected $settings = [];
 
     /**
-     * @return array
-     * @throws \Exception
+     * @param string $file
      */
-    public function getSettings()
+    public function __construct($file)
     {
-        if (empty($this->settings)) {
-            $file = ROOT_DIR . 'configuration/settings.yaml';
-
-            if (!is_file($file)) {
-                throw new \Exception('Configuration file not available. Expected file is configuration/settings.yaml');
-            }
-
-            $yamlParser = new Parser();
-            $this->settings = $yamlParser->parse(file_get_contents($file));
+        if (!is_file($file)) {
+            throw new \Exception('Configuration file "' . $file . '" not available. Expected file is configuration/settings.yaml');
         }
-        
-        return $this->settings;
+
+        $yamlParser = new Parser();
+        $this->settings = $yamlParser->parse(file_get_contents($file));
     }
 
     /**
@@ -39,15 +32,18 @@ class Settings {
     public function get($settingKey)
     {
         $keys = explode('.', trim($settingKey));
-        $settings = $this->getSettings();
+        $keysCount = count($keys);
+        $settings = $this->settings;
+        $iterator = 1;
         
         foreach ($keys as $key) {
             if (!isset($settings[$key])) {
                 continue;
             }
             
-            if (is_array($settings[$key])) {
+            if (is_array($settings[$key]) && $iterator != $keysCount) {
                 $settings = $settings[$key];
+                $iterator++;
                 continue;
             }
             

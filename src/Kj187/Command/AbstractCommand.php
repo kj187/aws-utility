@@ -36,6 +36,14 @@ class AbstractCommand extends Command
     protected $settings = [];
 
     /**
+     * @param \Kj187\Settings $settings
+     */
+    public function setSettings(\Kj187\Settings $settings)
+    {
+        $this->settings = $settings;
+    }
+
+    /**
      * @param InputInterface $input
      * @param OutputInterface $output
      * @throws \Exception
@@ -43,11 +51,8 @@ class AbstractCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
-        
-        $this->settings = new \Kj187\Settings();
-        
-        $this->region = $this->settings->get('defaults.region');
 
+        $this->region = $this->settings->get('defaults.region');
         if ($region = $input->getOption('region')) {
             $this->region = $region;
         }

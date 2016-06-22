@@ -1,0 +1,12 @@
+level1:
+    level2:
+        level3:
+            firstname: Julian 
+            lastname: Kleinhans
+        level3b:
+            address:
+                street: 'Awesomestreet 7'
+                city: 'Awesome City'
+            social:
+                twitter: kj187
+                github: kj187
