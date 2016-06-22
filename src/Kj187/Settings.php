@@ -4,6 +4,13 @@ namespace Kj187;
 
 use Symfony\Component\Yaml\Parser;
 
+/**
+ * Settings
+ *
+ * Usage: $settings = new \Kj187\Settings()
+ * To get a single value just use: $settings->get('level1.level2.level3.firstname')
+ * To get a nested array just use: $settings->get('level1.level2')
+ */
 class Settings {
     
     /**
