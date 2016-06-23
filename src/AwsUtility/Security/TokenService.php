@@ -1,10 +1,8 @@
 <?php
 
-namespace AwsUtility\Service;
+namespace AwsUtility\Security;
 
-use AwsUtility\Settings;
-
-class SecurityTokenService {
+class TokenService {
 
     /**
      * @var \Aws\Result
@@ -12,30 +10,21 @@ class SecurityTokenService {
     protected $result = null;
 
     /**
-     * Returns a set of temporary security credentials (consisting of an access key ID, 
-     * a secret access key, and a security token) that you can use to access AWS resources 
+     * Returns a set of temporary security credentials (consisting of an access key ID,
+     * a secret access key, and a security token) that you can use to access AWS resources
      * that you might not normally have access to.
      *
      * http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sts-2011-06-15.html#assumerole
      *
-     * @param \Aws\Credentials\CredentialsInterface $credentials
-     * @param string $region
+     * @param \Aws\Sts\StsClient $stsClient
      * @param string $roleArn The Amazon Resource Name (ARN) of the role to assume.
      * @param string $roleSessionName An identifier for the assumed role session.
      * @param string $externalId A unique identifier that is used by third parties when assuming roles in their customers' accounts.
      * @return \Aws\Result
+     * @throws \Exception
      */
-    public function __construct(\Aws\Credentials\CredentialsInterface $credentials, $region, $roleArn, $roleSessionName, $externalId = '')
-    {        
-        $stsClient = new \Aws\Sts\StsClient(
-            [
-                'endpoint' => Settings::get('services.sts.endpoint'),
-                'version' => Settings::get('services.sts.version'),
-                'region' => $region,
-                'credentials' => $credentials
-            ]
-        );
-        
+    public function __construct(\Aws\Sts\StsClient $stsClient, $roleArn, $roleSessionName, $externalId = '')
+    {
         $result = $stsClient->assumeRole([
             'RoleArn' => $roleArn,
             'RoleSessionName' => $roleSessionName,
@@ -48,7 +37,7 @@ class SecurityTokenService {
         
         $this->result = $result;
     }
-    
+
     /**
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 
-namespace AwsUtility;
+namespace AwsUtility\Security;
 
 class Credentials extends \Aws\Credentials\Credentials {
 
@@ -13,7 +13,7 @@ class Credentials extends \Aws\Credentials\Credentials {
      * @param string $token Security token to use
      * @param int $expires UNIX timestamp for when credentials expire
      */
-    public function __construct($key, $secret, $token = null, $expires = null)
+    public function __construct($key = '', $secret = '', $token = null, $expires = null)
     {
         parent::__construct($this->getAwsAccessKeyId($key), $this->getAwsSecretAccessKey($secret), $token, $expires);
     }

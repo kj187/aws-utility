@@ -1,7 +1,5 @@
 <?php
 
-define('ROOT_DIR', str_replace(basename(__DIR__), '', __DIR__));
-
 class SettingsTest extends PHPUnit_Framework_TestCase
 {
     /**

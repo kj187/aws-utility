@@ -6,7 +6,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use AwsUtility\Settings;
 
 class AbstractCommand extends Command
 {
@@ -59,7 +58,7 @@ class AbstractCommand extends Command
 
         $awsAccessKeyId = $input->getOption('awsAccessKeyId');
         $awsSecretAccessKey = $input->getOption('awsSecretAccessKey');
-        $this->credentials = new \AwsUtility\Credentials($awsAccessKeyId, $awsSecretAccessKey);
+        $this->credentials = new \AwsUtility\Security\Credentials($awsAccessKeyId, $awsSecretAccessKey);
 
         if ($input->hasParameterOption('--assumeRole')) {
             $assumedRoleArn = $input->getOption('assumedRoleArn');
@@ -67,13 +66,22 @@ class AbstractCommand extends Command
                 // TODO ask for roles with filter http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-iam-2010-05-08.html#listroles
                 throw new \Exception('Option --assumedRoleArn empty');
             }
-            $assumedRoleExternalId = $input->getOption('assumedRoleExternalId');
-            $securityTokenService = new \AwsUtility\Service\SecurityTokenService($this->credentials, $this->region, $assumedRoleArn, $this->assumedRoleSessionName, $assumedRoleExternalId);
+
+            $stsClient = new \Aws\Sts\StsClient(
+                [
+                    'endpoint' => $this->settings->get('services.sts.endpoint'),
+                    'version' => $this->settings->get('services.sts.version'),
+                    'region' => $this->region,
+                    'credentials' => $this->credentials
+                ]
+            );
+            $securityTokenService = new \AwsUtility\Security\TokenService($stsClient, $assumedRoleArn, $this->assumedRoleSessionName, $input->getOption('assumedRoleExternalId'));
+
             $awsAccessKeyId = $securityTokenService->getAwsAccessKeyId();
             $awsSecretAccessKey = $securityTokenService->getAwsSecretAccessKey();
             $token = $securityTokenService->getToken();
             
-            $this->assumedRoleCredentials = new \AwsUtility\Credentials($awsAccessKeyId, $awsSecretAccessKey, $token);
+            $this->assumedRoleCredentials = new \AwsUtility\Security\Credentials($awsAccessKeyId, $awsSecretAccessKey, $token);
         }
     }
     
