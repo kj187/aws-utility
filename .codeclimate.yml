@@ -1,6 +1,8 @@
 engines:
   phpmd:
     enabled: true
+    config:
+        rulesets: "cleancode,codesize,controversial,design,unusedcode"
 ratings:
   paths:
   - "**.php"
