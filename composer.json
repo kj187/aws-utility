@@ -28,5 +28,5 @@
             "": "src"
         }
     },    
-    "bin": ["bin/application.php"]
+    "bin": ["bin/aws-utility.php"]
 }
