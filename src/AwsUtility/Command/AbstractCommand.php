@@ -1,12 +1,12 @@
 <?php
 
-namespace Kj187\Command;
+namespace AwsUtility\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Kj187\Settings;
+use AwsUtility\Settings;
 
 class AbstractCommand extends Command
 {
@@ -31,14 +31,14 @@ class AbstractCommand extends Command
     protected $assumedRoleSessionName = 'aws-utility';
 
     /**
-     * @var \Kj187\Settings
+     * @var \AwsUtility\Settings
      */
     protected $settings = [];
 
     /**
-     * @param \Kj187\Settings $settings
+     * @param \AwsUtility\Settings $settings
      */
-    public function setSettings(\Kj187\Settings $settings)
+    public function setSettings(\AwsUtility\Settings $settings)
     {
         $this->settings = $settings;
     }
@@ -59,7 +59,7 @@ class AbstractCommand extends Command
 
         $awsAccessKeyId = $input->getOption('awsAccessKeyId');
         $awsSecretAccessKey = $input->getOption('awsSecretAccessKey');
-        $this->credentials = new \Kj187\Credentials($awsAccessKeyId, $awsSecretAccessKey);
+        $this->credentials = new \AwsUtility\Credentials($awsAccessKeyId, $awsSecretAccessKey);
 
         if ($input->hasParameterOption('--assumeRole')) {
             $assumedRoleArn = $input->getOption('assumedRoleArn');
@@ -68,12 +68,12 @@ class AbstractCommand extends Command
                 throw new \Exception('Option --assumedRoleArn empty');
             }
             $assumedRoleExternalId = $input->getOption('assumedRoleExternalId');
-            $securityTokenService = new \Kj187\Service\SecurityTokenService($this->credentials, $this->region, $assumedRoleArn, $this->assumedRoleSessionName, $assumedRoleExternalId);
+            $securityTokenService = new \AwsUtility\Service\SecurityTokenService($this->credentials, $this->region, $assumedRoleArn, $this->assumedRoleSessionName, $assumedRoleExternalId);
             $awsAccessKeyId = $securityTokenService->getAwsAccessKeyId();
             $awsSecretAccessKey = $securityTokenService->getAwsSecretAccessKey();
             $token = $securityTokenService->getToken();
             
-            $this->assumedRoleCredentials = new \Kj187\Credentials($awsAccessKeyId, $awsSecretAccessKey, $token);
+            $this->assumedRoleCredentials = new \AwsUtility\Credentials($awsAccessKeyId, $awsSecretAccessKey, $token);
         }
     }
     

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kj187\Command\ApiGateway;
+namespace AwsUtility\Command\ApiGateway;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

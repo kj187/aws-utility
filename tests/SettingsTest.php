@@ -11,7 +11,7 @@ class SettingsTest extends PHPUnit_Framework_TestCase
     {
         try {
             $file = 'doesNotExist.yaml';
-            $settings = new \Kj187\Settings($file);
+            $settings = new \AwsUtility\Settings($file);
         } catch (\Exception $e) {
             $this->assertSame('Configuration file "' . $file . '" not available. Expected file is configuration/settings.yaml', $e->getMessage());
         }
@@ -23,7 +23,7 @@ class SettingsTest extends PHPUnit_Framework_TestCase
     public function missingSettingsKey()
     {
         try {
-            $settings = new \Kj187\Settings(FIXTURE_ROOT . '/settings.yaml');
+            $settings = new \AwsUtility\Settings(FIXTURE_ROOT . '/settings.yaml');
             $settings->get('test.test2');
         } catch (\Exception $e) {
             $this->assertSame('Setting with key test.test2 not available', $e->getMessage());
@@ -35,7 +35,7 @@ class SettingsTest extends PHPUnit_Framework_TestCase
      */
     public function getReturnsExpectedNestedValue()
     {
-        $settings = new \Kj187\Settings(FIXTURE_ROOT . '/settings.yaml');
+        $settings = new \AwsUtility\Settings(FIXTURE_ROOT . '/settings.yaml');
         $firstname = $settings->get('level1.level2.level3.firstname');
         $this->assertSame('Julian', $firstname);
         
@@ -48,7 +48,7 @@ class SettingsTest extends PHPUnit_Framework_TestCase
      */
     public function getReturnsExpectedNestedArray()
     {
-        $settings = new \Kj187\Settings(FIXTURE_ROOT . '/settings.yaml');
+        $settings = new \AwsUtility\Settings(FIXTURE_ROOT . '/settings.yaml');
         $data = $settings->get('level1.level2.level3b');
         $this->assertEquals(2, count($data));
         $this->assertSame('kj187', $data['social']['twitter']);

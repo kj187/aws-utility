@@ -1,6 +1,6 @@
 <?php
 
-namespace Kj187\Command\Kinesis;
+namespace AwsUtility\Command\Kinesis;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Yaml\Parser;
 
-class AbstractCommand extends \Kj187\Command\AbstractCommand
+class AbstractCommand extends \AwsUtility\Command\AbstractCommand
 {
     /**
      * @var \Aws\Kinesis\KinesisClient

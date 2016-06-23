@@ -1,6 +1,6 @@
 <?php
 
-namespace Kj187;
+namespace AwsUtility;
 
 class Buffer {
 

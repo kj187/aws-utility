@@ -1,6 +1,6 @@
 <?php
 
-namespace Kj187\Command\Kinesis;
+namespace AwsUtility\Command\Kinesis;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,7 +30,7 @@ class ConsumerCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $streamName = $input->getArgument('streamName');
-
+        
         $client = $this->getClient();
         $res = $client->describeStream([ 'StreamName' => $streamName ]);
 

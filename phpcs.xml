@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="KJ187-PSR2">
+<ruleset name="AwsUtility-PSR2">
     <rule ref="PSR2">
         <!-- Handle line length in a different rule -->
         <exclude name="Generic.Files.LineLength"/>

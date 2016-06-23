@@ -1,6 +1,6 @@
 <?php
 
-namespace Kj187\Command\ApiGateway;
+namespace AwsUtility\Command\ApiGateway;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class AbstractCommand extends \Kj187\Command\AbstractCommand
+class AbstractCommand extends \AwsUtility\Command\AbstractCommand
 {
     const SERVICE_NAME = 'execute-api';
     

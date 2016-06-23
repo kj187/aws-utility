@@ -1,6 +1,6 @@
 <?php
 
-namespace Kj187\Command\Kinesis;
+namespace AwsUtility\Command\Kinesis;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,7 +34,7 @@ class ProducerCommand extends AbstractCommand
         $output->writeln('');
         $client = $this->getClient();
 
-        $buffer = new \Kj187\Buffer(function(array $data) use ($client, $streamName, $output) {
+        $buffer = new \AwsUtility\Buffer(function(array $data) use ($client, $streamName, $output) {
             $output->writeln('Flushing');
             $parameter = [ 'StreamName' => $streamName, 'Records' => []];
             foreach ($data as $item) {

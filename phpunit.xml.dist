@@ -16,9 +16,9 @@
         <whitelist>
             <directory>src</directory>
             <exclude>
-                <file>src/Kj187/Command/CommandRegistry.php</file>
-                <directory>src/Kj187/Command</directory>
-                <directory>src/Kj187/Command</directory>
+                <file>src/AwsUtility/Command/CommandRegistry.php</file>
+                <directory>src/AwsUtility/Command</directory>
+                <directory>src/AwsUtility/Command</directory>
             </exclude>
         </whitelist>
     </filter>

@@ -1,8 +1,8 @@
 <?php
 
-namespace Kj187\Service;
+namespace AwsUtility\Service;
 
-use Kj187\Settings;
+use AwsUtility\Settings;
 
 class SecurityTokenService {
 

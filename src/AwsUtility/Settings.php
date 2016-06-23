@@ -1,13 +1,13 @@
 <?php
 
-namespace Kj187;
+namespace AwsUtility;
 
 use Symfony\Component\Yaml\Parser;
 
 /**
  * Settings
  *
- * Usage: $settings = new \Kj187\Settings()
+ * Usage: $settings = new \AwsUtility\Settings()
  * To get a single value just use: $settings->get('level1.level2.level3.firstname')
  * To get a nested array just use: $settings->get('level1.level2')
  */
