@@ -21,69 +21,117 @@ At least the ones that are important to me, so not all methods for the APIs are 
 
 ```
 $ curl -sS https://getcomposer.org/installer | php
-$ php composer.phar install
+$ sudo mv composer.phar /usr/local/bin/composer
 ```
 
-### AWS access
+## Installation
+
+```
+$ git clone git@github.com:kj187/aws-utility.git
+$ cd aws-utility
+$ composer install
+```
+
+## AWS access
+
+The following example shows how you would configure environment variables:
 
 ```
 $ export AWS_ACCESS_KEY_ID=YOURACCESSKEY
 $ export AWS_SECRET_ACCESS_KEY=YOURSECRETACCESSKEY
 ```
 
-And make sure this user is allowed to use at least the following actions:
+But, you can also set these keys as command options like:
+
+```
+$ php bin/aws-utility.php api-gateway:producer --awsAccessKeyId='YOURACCESSKEY' --awsSecretAccessKey='YOURSECRETACCESSKEY'
+```
+
+### Access rights
+
+Make sure that the user you are using have the following actions:
 
 #### Kinesis
 
-- DescribeStream
-- GetRecords
-- GetShardIterator
-- ListStreams
-- PutRecord
-- PutRecords 
+- kinesis:DescribeStream
+- kinesis:GetRecords
+- kinesis:GetShardIterator
+- kinesis:ListStreams
+- kinesis:PutRecord
+- kinesis:PutRecords 
 
 #### API Gateway
 
 - apigateway:GET
 
-## Usage
 
-All commands are interactive, you have to choose a stream/endpoint of a pool of available streams/endpoints.
+## Getting Started
 
+All commands are interactive, you dont need to tell this application what stream or endpoint you want to work with,  
+it will ask you, while it shows you all available streams or endpoints as a list. 
+Of course, you can also hand over this information as an argument, so that you dont get a question (quite handy for automation).
+
+Keep in mind, all commands have a few optional options, just check it with:
+  
+```
+$ php bin/aws-utility.php <COMMAND> --help
+```
+  
 ### Kinesis
-To check how many records are available in a stream, use:
+
+#### Consumer
+
+Checks how many records are available in a stream:
 
 ```
-$ php bin/application.php kinesis:consumer
+$ php bin/aws-utility.php kinesis:consumer
 ```
 
-To push data to a stream, use:
+![Example](http://res.cloudinary.com/kj187/image/upload/v1466664373/aws-utility-example_hcikjs.png)
+
+#### Producer 
+
+Pushes records to a stream:
 
 ```
-$ php bin/application.php kinesis:producer
+$ php bin/aws-utility.php kinesis:producer
 ```
 
-But first, create a new directory "mocks" below "resources" and move your data inside. One file equals one record.
-
+But what records? You have to create some first. Below the "resources" directory, create a new directory "mocks/kinesis/".
+Here you could add one or multiple JSON files for example, one file is one record and will be pushed to the choosen stream.
 
 ### API Gateway
 
-```
-$ php bin/application.php api-gateway:producer
-```
+#### Producer
+
+Pushes records to a API Gateway endpoint:
 
 ```
-$ php bin/application.php api-gateway:producer --region=eu-west-2
+$ php bin/aws-utility.php api-gateway:producer
 ```
 
-```
-$ php bin/application.php api-gateway:producer --awsAccessKeyId=AKIQIGRDAXXXX56SEGNA --awsSecretAccessKey=nHCNP8PJyNOiLAF86O1tTrNCC/bT0boBQ+Lm15F
-```
+Same here, you have to create some records first. Below the "resources" directory, create a new directory "mocks/api-gateway/".
+Here you could add one or multiple JSON files for example, one file is one record and will be pushed to the choosen endpoint.
+
+
+### Assume Role
+
+Returns a set of temporary security credentials (consisting of an access key ID, a secret access key, and a security token) 
+that you can use to access AWS resources that you might not normally have access to.
+
+**Important:** You cannot call AssumeRole by using AWS root account credentials; access is denied. 
+You must use credentials for an IAM user or an IAM role to call AssumeRole. 
+
+http://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html
+
+To use all described commands above with AssumeRole, just add some options to the command
+
+| Option                  | Description                                                                                         | Example                                                  |
+|-------------------------|-----------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| --assumeRole            | Required to enable the assumeRole feature. You dont need to add a value                             |                                                          |
+| ---assumedRoleArn       | The Amazon Resource Name (ARN) of the role that the caller is assuming.                             | arn:aws:iam::1234567898765:role/MyRoleName-1D1A0IQS32268 |
+| --assumedRoleExternalId | A unique identifier that is used by third parties when assuming roles in their customers' accounts. | 123abc456def789                                          |
 
 ```
-$ php bin/application.php api-gateway:producer --assumeRole --assumedRoleArn='arn:aws:iam::1234567898765:role/MyRoleName-1D1A0IQS32268' --assumedRoleExternalId='123abc456def789'
+$ php bin/aws-utility.php api-gateway:producer --assumeRole --assumedRoleArn='arn:aws:iam::1234567898765:role/MyRoleName-1D1A0IQS32268' --assumedRoleExternalId='123abc456def789'
 ```
-
-## Example
-
-![Example](http://res.cloudinary.com/kj187/image/upload/v1466067037/KinesisUtilityExample_pluraf.png)
