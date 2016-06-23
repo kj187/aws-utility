@@ -1,6 +1,5 @@
 {
     "name": "kj187/aws-utility",
-    "version": "1.0.0",
     "description": "Lightweight AWS utility to consume and produce data",
     "license": "OSL-3.0",
     "authors": [
@@ -16,17 +15,15 @@
         "symfony/console": "^3.1",
         "symfony/yaml": "^3.1",
         "guzzle/guzzle": "^3.9",
-        "php": ">=5.4.0",
-        "codeclimate/php-test-reporter": "dev-master"
+        "php": ">=5.4.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^2.4",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.0",
+        "codeclimate/php-test-reporter": "dev-master"
     },
     "autoload": {
-        "psr-4": {
-            "": "src"
-        }
+        "psr-4": {"AwsUtility\\": "src/"}
     },    
     "bin": ["bin/aws-utility.php"]
 }
