@@ -30,13 +30,9 @@ class ConsumerCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $streamName = $input->getArgument('streamName');
-        
-        $client = $this->getClient();
-        $res = $client->describeStream([ 'StreamName' => $streamName ]);
 
-        $shardIds = $res->search('StreamDescription.Shards[].ShardId');
+        $shardIds = $this->kinesisService->findAllShardIds($streamName);
         $recordsInStream = 0;
-        $numberOfRecordsPerBatch = 10000;
 
         $output->writeln('');
         $output->writeln('Shards: ' . count($shardIds));
@@ -44,30 +40,8 @@ class ConsumerCommand extends AbstractCommand
 
         foreach ($shardIds as $shardId) {
             $output->writeln("ShardId: $shardId");
-
-            $res = $client->getShardIterator([
-                'ShardId' => $shardId,
-                'ShardIteratorType' => 'TRIM_HORIZON',
-                'StreamName' => $streamName,
-            ]);
-            $shardIterator = $res->get('ShardIterator');
-
-            $recordsInShard = 0;
-            do {
-                $res = $client->getRecords([
-                    'Limit' => $numberOfRecordsPerBatch,
-                    'ShardIterator' => $shardIterator
-                ]);
-
-                $recordsInBatch = count($res->get('Records'));
-                $recordsInShard = $recordsInShard+$recordsInBatch;
-                $shardIterator = $res->get('NextShardIterator');
-
-                usleep(200 * 1000);
-            } while ($res->get('MillisBehindLatest') !== 0);
-
+            $recordsInShard = $this->kinesisService->getShardRecordCount($shardId, $streamName);
             $recordsInStream = $recordsInStream+$recordsInShard;
-
             $output->writeln("\t$recordsInShard records available");
         }
 

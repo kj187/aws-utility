@@ -30,20 +30,15 @@ class ProducerCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $streamName = $input->getArgument('streamName');
-
         $output->writeln('');
-        $client = $this->getClient();
 
-        $buffer = new \AwsUtility\Buffer(function(array $data) use ($client, $streamName, $output) {
+        $buffer = new \AwsUtility\Buffer(function(array $data) use ($streamName, $output) {
             $output->writeln('Flushing');
-            $parameter = [ 'StreamName' => $streamName, 'Records' => []];
-            foreach ($data as $item) {
-                $parameter['Records'][] = ['Data' => $item, 'PartitionKey' => md5($item)];
-            }
-            $res = $client->putRecords($parameter);
-            $output->writeln('Failed records: ' . $res->get('FailedRecordCount'));
+            $result = $this->kinesisService->putRecords($streamName, $data);
+            $output->writeln('Failed records: ' . $result->get('FailedRecordCount'));
         });
 
+        // TODO interact, read folder and ask user which one should be used for mocks
         foreach (new \DirectoryIterator($this->settings->get('services.kinesis.producer.mocks.path')) as $fileInfo) {
             if($fileInfo->isDot()) continue;
             $fileContent = file_get_contents($fileInfo->getPathName());
