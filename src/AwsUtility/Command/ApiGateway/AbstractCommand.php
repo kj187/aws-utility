@@ -74,7 +74,6 @@ class AbstractCommand extends \AwsUtility\Command\AbstractCommand
         $this->interactAskForRestApiName($input, $output);
         $restApiName = $input->getArgument('restApiName');
         $restApi = $this->restApis[$restApiName];
-        $restApiId = $restApi['id'];
         
         $this->interactAskForResourcePathPart($input, $output, $restApi['id']);
         $resourcePathPart = $input->getArgument('resourcePathPart');

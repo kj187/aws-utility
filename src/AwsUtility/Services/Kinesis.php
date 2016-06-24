@@ -89,16 +89,15 @@ class Kinesis {
     {
         $parameter = [ 'StreamName' => $streamName, 'Records' => []];
 
-        if (is_array($data)) {
-            foreach ($data as $item) {
-                $parameter['Records'][] = ['Data' => $item, 'PartitionKey' => md5($item)];
-            }
-        } else {
-            $parameter['Records'][] = ['Data' => $data, 'PartitionKey' => md5($data)];
+        if (!is_array($data)) {
+            $data = [$data];
         }
-
+        
+        foreach ($data as $item) {
+            $parameter['Records'][] = ['Data' => $item, 'PartitionKey' => md5($item)];
+        }
+        
         $result = $this->client->putRecords($parameter);
-
         return $result;
     }
 }
