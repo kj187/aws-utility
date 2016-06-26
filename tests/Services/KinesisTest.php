@@ -1,6 +1,8 @@
 <?php
 
-class KinesisTest extends PHPUnit_Framework_TestCase
+namespace AwsUtility\Tests;
+
+class KinesisTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

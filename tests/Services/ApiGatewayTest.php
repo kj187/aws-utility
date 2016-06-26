@@ -1,6 +1,8 @@
 <?php
 
-class ApiGatewayTest extends PHPUnit_Framework_TestCase
+namespace AwsUtility\Tests;
+
+class ApiGatewayTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

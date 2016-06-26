@@ -1,6 +1,8 @@
 <?php
 
-class CredentialsTest extends PHPUnit_Framework_TestCase
+namespace AwsUtility\Tests;
+
+class CredentialsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

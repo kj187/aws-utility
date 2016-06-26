@@ -1,6 +1,8 @@
 <?php
 
-class SettingsTest extends PHPUnit_Framework_TestCase
+namespace AwsUtility\Tests;
+
+class SettingsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

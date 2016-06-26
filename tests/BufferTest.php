@@ -1,6 +1,8 @@
 <?php
 
-class BufferTest extends PHPUnit_Framework_TestCase
+namespace AwsUtility\Tests;
+
+class BufferTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

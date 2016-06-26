@@ -23,7 +23,10 @@
         "codeclimate/php-test-reporter": "dev-master"
     },
     "autoload": {
-        "psr-4": {"AwsUtility\\": "src/AwsUtility/"}
+        "psr-4": {
+            "AwsUtility\\": "src/AwsUtility/",
+            "AwsUtility\\Tests\\": "tests/"
+        }
     },    
     "bin": ["bin/aws-utility.php"]
 }
