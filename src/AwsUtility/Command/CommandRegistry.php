@@ -9,7 +9,8 @@ class CommandRegistry
         return [
             new \AwsUtility\Command\Kinesis\ConsumerCommand(),
             new \AwsUtility\Command\Kinesis\ProducerCommand(),
-            new \AwsUtility\Command\ApiGateway\ProducerCommand()
+            new \AwsUtility\Command\ApiGateway\ProducerCommand(),
+            new \AwsUtility\Command\Iam\InstanceProfiles\ListCommand()
         ];
     }
 }

@@ -19,3 +19,6 @@ services:
     sts:
         version: '2011-06-15'
         endpoint: 'https://sts.eu-west-1.amazonaws.com'
+        
+    iam:
+        version: '2010-05-08'
