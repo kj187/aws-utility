@@ -5,6 +5,7 @@
 [![Code Climate](https://codeclimate.com/github/kj187/aws-utility/badges/gpa.svg)](https://codeclimate.com/github/kj187/aws-utility)
 [![Test Coverage](https://codeclimate.com/github/kj187/aws-utility/badges/coverage.svg)](https://codeclimate.com/github/kj187/aws-utility/coverage)
 [![Issue Count](https://codeclimate.com/github/kj187/aws-utility/badges/issue_count.svg)](https://codeclimate.com/github/kj187/aws-utility)
+[![@kj187 on Twitter](https://img.shields.io/badge/twitter-%40kj187-green.svg?style=flat)](https://twitter.com/kj187)
 
 **Lightweight AWS Utility**
 
