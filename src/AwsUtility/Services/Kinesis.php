@@ -4,6 +4,8 @@ namespace AwsUtility\Services;
 
 class Kinesis {
 
+    const MAX_EMPTY_MILLISBEHINDLATEST_SUCCESSIVELY_DURATIONS = 30;
+
     /**
      * @var \Aws\Kinesis\KinesisClient
      */
@@ -63,7 +65,9 @@ class Kinesis {
 
         $shardIterator = $result->get('ShardIterator');
         $recordsInShard = 0;
-        
+        $emptyDurationCount = 0;
+        $emptyMillisBehindLatestSuccessivelyDurationCount = 0;
+
         do {
             $result = $this->client->getRecords([
                 'Limit' => $this->numberOfRecordsPerBatch,
@@ -73,9 +77,10 @@ class Kinesis {
             $recordsInBatch = count($result->get('Records'));
             $recordsInShard = $recordsInShard+$recordsInBatch;
             $shardIterator = $result->get('NextShardIterator');
+            $emptyMillisBehindLatestSuccessivelyDurationCount = $result->get('MillisBehindLatest') === 0 ? $emptyMillisBehindLatestSuccessivelyDurationCount+1 : 0;
 
             usleep(200 * 1000);
-        } while ($result->get('MillisBehindLatest') !== 0);
+        } while ($emptyMillisBehindLatestSuccessivelyDurationCount < self::MAX_EMPTY_MILLISBEHINDLATEST_SUCCESSIVELY_DURATIONS);
         
         return $recordsInShard;
     }
